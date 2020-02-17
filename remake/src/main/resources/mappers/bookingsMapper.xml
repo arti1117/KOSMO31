@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosmo.mapper.bookingsMapper">
+
+	<!--  예약정보  출력-->
+	<select id="selectBook" parameterType="bookingsVO" resultType="bookingsVO">
+		SELECT  
+			bookings.id AS id,
+			code AS code,
+			movie.title_kor AS titleKor,
+			bookings.hall AS hall,
+			TO_CHAR(movie.op_time,'YYYY_MM_DD') AS opTime,
+			bookings.seat_show AS seatShow,
+			bookings.seat_hidden AS seatHidden
+		FROM 
+			bookings inner join movie
+		USING(code) 
+		WHERE 
+			bookings.id = #{id}
+	</select>
+
+	<!-- 좌석 예매시, Bookings 테이블에 데이터 INSERT -->
+	<insert id="insertBook" parameterType="bookingsVO">
+		INSERT INTO 
+			bookings
+		(
+			no,
+			id,
+			code,
+			hall,
+			seat_show,
+			seat_hidden
+		)
+		VALUES
+		(
+			  (SELECT IFNULL(COUNT(no),0) FROM HR.MV_REV)
+			, #{id}
+			, #{code}
+			, #{seatShow}
+			, #{seatHidden}
+			, #{hall}
+		)
+	</insert>
+
+	<!-- 예약정보 삽입 -->
+	<insert id="insertBookInfo" parameterType="seatVO">
+		INSERT INTO
+			bookings
+		(
+			id,
+			code,
+			seat_show,
+			seat_hidden
+		)
+		VALUES
+		(
+			#{id},
+			#{code},
+			#{seatShow},
+			#{seatHidden}
+		)
+	</insert>
+	
+	<delete id="deleteBook" parameterType="bookingsVO">
+		DELETE
+			bookings
+		WHERE
+			id = #{id} AND
+			seat_hidden = #{seatHidden}
+	</delete>
+	
+</mapper>

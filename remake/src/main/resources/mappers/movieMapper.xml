@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.kosmo.mapper.movieMapper">
+ 
+	<select id="selectListTotCount" resultType="int" parameterType="pagingBean">
+		SELECT 
+			COUNT(*)
+		FROM 
+			movie
+	</select>
+
+	<select id="selectMovieList" parameterType="pagingBean" resultType="movieVO">
+		SELECT
+	            *
+	    FROM
+	    (
+	    	SELECT
+	            title_kor AS titleKor,
+	            title_eng AS titleEng,
+	            hall,
+	            TO_CHAR(op_time, '%Y') AS opTimeYear,
+	            TO_CHAR(op_time, '%c') AS opTimeMonth,
+	            TO_CHAR(op_time, '%Y %c %d %H') AS opTime,
+	            TO_CHAR(op_time, '%d') AS opTimeDay,
+	            TO_CHAR(op_time, '%H') AS opTimeHh,
+	            TO_CHAR(op_time, '%i') AS opTimeMi,
+	            TO_CHAR(ed_time, '%Y %c %d %H') AS edTime,
+	            TO_CHAR(ed_time, '%Y') AS edTimeYear,
+	            TO_CHAR(ed_time, '%c') AS edTimeMonth,
+	            TO_CHAR(ed_time, '%d') AS edTimeDay,
+	            TO_CHAR(ed_time, '%H') AS edTimeHh,
+	            TO_CHAR(ed_time, '%i') AS edTimeMi,
+	            path,
+	            code,
+	            @dseq := @dseq -1 as betweenNum,
+	            @aseq := @aseq +1 as NUM,
+	            (SELECT COUNT(*) FROM seat),
+	        FROM
+	            movie,
+	            (select @dseq := (select count(code) from movie) + 1) dseq,
+	            (select @aseq := 0) aseq	        	
+        )
+	</select>
+
+	<select id="selectMovie" parameterType="movieVO" resultType="movieVO">
+		SELECT
+            *
+        FROM (
+            SELECT
+                title_kor AS titleKor,
+                title_eng AS titleEng,
+                hall,
+                TO_CHAR(op_time, '%Y %c %d %H') AS opTime,
+                TO_CHAR(ed_time, '%Y %c %d %H') AS edTime,
+                path,
+                code,
+	            @dseq := @dseq -1 as betweenNum,
+	            @aseq := @aseq +1 as NUM,
+                (SELECT COUNT(*) FROM seat)
+            FROM
+                movie,
+	            (select @dseq := (select count(code) from movie) + 1) dseq,
+	            (select @aseq := 0) aseq	      
+            WHERE
+            	movie.code = #{code}
+            )
+	</select>
+
+	<insert id="insertMovie" parameterType="movieVO">
+		INSERT INTO
+			movie
+		(
+			title_kor,
+			title_eng,
+			hall,
+			op_time,
+			ed_time,
+			path,
+			code
+		)
+		VALUES
+		(
+			#{titleKor},
+			#{titleEng},
+			#{hall},
+			TO_DATE(#{opTime}, '%c-%d %H:%i'),
+			TO_DATE(#{edTime}, '%c-%d %H:%i'),
+			#{path},
+			#{code}
+		)
+	</insert>
+
+	<update id="updateMovie" parameterType="movieVO">
+		UPDATE
+			movie
+		SET 
+			title_kor = #{titleKor},
+			title_eng = #{titleEng},
+			hall = #{hall},
+			op_time = TO_DATE(#{opTime},'%c-%d %H:%i'),
+			ed_time = TO_DATE(#{edTime},'%c-%d %H:%i'),
+			path = #{path}
+		WHERE
+			code = #{code}
+	</update>
+	
+	<delete id="deleteMovie" parameterType="movieVO">
+		DELETE FROM
+			movie
+		WHERE
+			code = #{code}
+	</delete>
+    
+</mapper>
+

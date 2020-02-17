@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    <configuration>
+ 
+        <typeAliases>
+            <typeAlias type="com.kosmo.test.dto.HelloVO" alias="helloVO"/>
+            <typeAlias type="com.kosmo.bean.PagingBean" alias="pagingBean"/>
+            <typeAlias type="com.kosmo.dto.BookingsVO" alias="bookingsVO"/>
+            <typeAlias type="com.kosmo.dto.MemberVO" alias="memberVO"/>
+            <typeAlias type="com.kosmo.dto.MovieVO" alias="movieVO"/>
+            <typeAlias type="com.kosmo.dto.SeatVO" alias="seatVO"/>
+        </typeAliases>
+
+    </configuration>

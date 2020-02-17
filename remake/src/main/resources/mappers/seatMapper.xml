@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosmo.mapper.seatMapper">
+
+	<!-- seat 화면 관련 쿼리 -->
+	<!-- 현재 예매된 좌석들 list출력 -->
+	<select id="selectSeat" parameterType="seatVO" resultType="seatVO">	
+		SELECT 
+			seat_no AS seatNo,
+			seat_value AS seatValue,
+			code
+		FROM 
+			seat
+		WHERE
+			code = #{code}
+		ORDER BY
+			seat_no
+	</select>
+	
+	<!-- 좌석 예약여부 확인 -->
+	<select id="selectSeatValue" parameterType="seatVO" resultType="seatVO">	
+		SELECT 
+			seat_no as seatNO,
+			seat_value AS seatValue,
+			code
+		FROM 
+			seat
+		WHERE
+			code = #{code,jdbcType=VARCHAR} AND
+			seat_no = #{seatNo,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 전체 좌석수 -->
+	<select id="selectTotalSeatCount" parameterType="seatVO" resultType="int">
+		SELECT 
+			COUNT(seat_no)
+		FROM 
+			seat
+		WHERE
+			code = #{code}
+	</select>
+	
+	<!-- 현재 예매된 좌석의 수 -->
+	<select id="selectRevSeatCount" parameterType="seatVO" resultType="int">
+		SELECT 
+			COUNT(seat_no)
+		FROM 
+			seat
+		WHERE
+			code = #{code} AND
+			seat_value = 'Y'
+	</select>
+	
+	<!-- Y가 예매상태 -->
+	<!-- 시트 추가 -->
+	<!-- version 68
+	<insert id="insertSeat" parameterType="seatBean">
+		INSERT INTO HR.MV_SEAT 
+		(
+			SEAT_NO
+			, SEAT_VALUE
+			, CODE
+		)
+		VALUES
+		(
+			#{seatNo}
+			, #{seatValue}
+			, #{code}
+		)
+	</insert>
+	-->
+		
+	<!-- 영화 좌석 정보 변경 -->
+	<update id="updateSeat" parameterType="bookingsVO">
+		UPDATE
+			seat
+		SET
+			seat_value = 'N',
+			id = null
+		WHERE
+			id = #{id}
+	</update>
+	
+	<!-- 좌석 예약시 작동하는 쿼리 -->
+	<update id="bookingSeat" parameterType="seatVO">
+		UPDATE
+			seat
+		SET 
+			seat_value = 'Y',
+			id=#{id}
+		WHERE
+			seat_no = #{revRequestSeat} AND
+			code=#{code}
+	</update>
+	
+	<insert id="insertHallSeat" parameterType="seatVO">
+		INSERT INTO
+			seat
+		(
+			seat_no,
+			seat_value,
+			code
+		)
+		VALUES
+		(
+			#{seatNo},
+			'N',
+			#{code}
+		)
+	</insert>
+	
+	
+	<!-- 영화 좌석 정보 변경 -->
+	<update id="deleteSeat" parameterType="bookingsVO">
+		UPDATE
+			seat
+		SET
+			seat_value = 'N',
+			id = null
+		WHERE
+			id = #{id} AND
+			seat_no = #{seatHidden}
+	</update>
+	
+	<delete id="deleteHall" parameterType="seatVO">
+		DELETE FROM
+			seat
+		WHERE
+			code = #{code}
+	</delete>
+	
+</mapper>

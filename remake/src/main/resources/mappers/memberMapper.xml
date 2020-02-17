@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.kosmo.mapper.memberMapper">
+ 
+	<sql id="memberColums">
+		id,
+		id as memberId,
+		pw as password,
+		name,
+		email,
+		tel,
+		regDate AS regDate
+	</sql>
+	
+		<!-- 로그인 진행 -->
+	<select id="selectLoginMember" parameterType="memberVO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			member
+		WHERE
+			id = #{id} AND
+			pw = #{pw}
+	</select>
+	
+	<!-- 회원 선택하기 -->
+	<select id="selectMember" parameterType="memberVO" resultType="memberVO">
+		SELECT
+			id,
+			name,
+			email,
+			tel,
+			regDate
+		FROM
+			member
+		WHERE
+			id = #{memberId}
+	</select>
+	
+	<!-- 중복이메일 확인 -->
+	<select id="emailcheck" parameterType="memberVO" resultType="memberVO">
+		SELECT
+			id,
+			name,
+			email,
+			tel,
+			regDate
+		FROM
+			member
+		WHERE
+			email = #{email}
+	</select>
+		
+	<!-- 전 회원목록 출력 -->
+	<select id="selectMemberList" parameterType="memberVO" resultType="memberVO">
+		SELECT
+			<include refid="memberColums" />
+		FROM
+			member
+	</select>
+			
+	<!-- 회원테이블 삽입 -->
+	<insert id="insertMember" parameterType="memberVO">
+		INSERT INTO
+			member
+		(
+			id,
+			pw,
+			name,
+			email,
+			tel
+		)
+		VALUES
+		(
+			#{id},
+			#{pw},
+			#{name},
+			#{email},
+			#{tel}
+		)
+	</insert>
+
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="memberVO">
+		UPDATE
+			member
+		SET
+			name = #{name},
+			email = #{email},
+			tel = #{tel}
+		WHERE
+			id = #{id}
+	</update>
+	
+	<!-- 회원정보 삭제 -->
+	<delete id="deleteMember" parameterType="memberVO">
+		DELETE 
+			member
+		WHERE
+			id = #{id}
+	</delete>
+	
+</mapper>
+
