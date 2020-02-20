@@ -19,21 +19,21 @@ public class BookingsDAOImpl implements BookingsDAO {
     private static final String Namespace = "com.kosmo.mapper.bookingsMapper";
     
     @Override
- 	public List<BookingsVO> selectBook(BookingsVO reserveBean) throws Exception {
+ 	public List<BookingsVO> selectBook(BookingsVO bean) throws Exception {
         
     	return sqlSession.selectList(Namespace + ".selectMember");
     	
     }
  	
  	@Override
- 	public int insertBook(BookingsVO reserveBean) throws Exception {
+ 	public int insertBook(BookingsVO bean) throws Exception {
  		
  		return sqlSession.insert(Namespace + ".insertBook");
  		
  	}
 
  	@Override
- 	public int insertBookInfo(SeatVO seatBean) throws Exception {
+ 	public int insertBookInfo(SeatVO bean) throws Exception {
  		
  		return sqlSession.insert(Namespace + ".insertBookInfo");
  		

@@ -7,16 +7,16 @@ import com.kosmo.dto.MovieVO;
 
 public interface MovieDAO {
 	
-	public int selectListTotCount(PagingBean pagingBean) throws Exception;
+	public int selectListTotCount(PagingBean bean) throws Exception;
 	
-	public List<MovieVO> selectMovieList(PagingBean pagingBean) throws Exception;
+	public List<MovieVO> selectMovieList(PagingBean bean) throws Exception;
 
-	public MovieVO selectMovie(MovieVO movieBean) throws Exception;
+	public MovieVO selectMovie(MovieVO bean) throws Exception;
 		
-	public int insertMovie(MovieVO movieBean) throws Exception;
+	public int insertMovie(MovieVO bean) throws Exception;
 	
-	public int updateMovie(MovieVO movieBean) throws Exception;
+	public int updateMovie(MovieVO bean) throws Exception;
 	
-	public int deleteMovie(MovieVO movieBean) throws Exception;
+	public int deleteMovie(MovieVO bean) throws Exception;
 	
 }

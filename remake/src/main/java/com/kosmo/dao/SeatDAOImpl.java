@@ -5,10 +5,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.kosmo.dto.BookingsVO;
 import com.kosmo.dto.SeatVO;
 
+@Repository
 public class SeatDAOImpl implements SeatDAO {
 	
 	@Inject
@@ -17,25 +19,25 @@ public class SeatDAOImpl implements SeatDAO {
     private static final String Namespace = "com.kosmo.mapper.seatMapper";
 	
 	@Override
-    public List<SeatVO> selectSeat(SeatVO seatBean) throws Exception {
+    public List<SeatVO> selectSeat(SeatVO bean) throws Exception {
 		
 		return sqlSession.selectList(Namespace + ".selectSeat");
 	}
 
 	@Override
-	public SeatVO selectSeatValue(SeatVO seatBean) throws Exception {
+	public SeatVO selectSeatValue(SeatVO bean) throws Exception {
 		
 		return sqlSession.selectOne(Namespace + ".selectSeatValue");
 	}
 
 	@Override
-	public int selectTotalSeatCount(SeatVO seatBean) throws Exception {
+	public int selectTotalSeatCount(SeatVO bean) throws Exception {
 		
 		return sqlSession.selectOne(Namespace + ".selectTotalSeatCount");
 	}
 	
 	@Override
-	public int selectRevSeatCount(SeatVO seatBean) throws Exception {
+	public int selectRevSeatCount(SeatVO bean) throws Exception {
 		
 		return sqlSession.selectOne(Namespace + ".selectRevSeatCount");
 		
@@ -49,14 +51,14 @@ public class SeatDAOImpl implements SeatDAO {
 	}
 	
 	@Override
-	public int bookingSeat(SeatVO sbean) throws Exception {
+	public int bookingSeat(SeatVO bean) throws Exception {
 		
 		return sqlSession.update(Namespace + ".bookingSeat");
 		
 	}
 
 	@Override
-	public int insertHallSeat(SeatVO seatBean) throws Exception {
+	public int insertHallSeat(SeatVO bean) throws Exception {
 		
 		return sqlSession.insert(Namespace + ".insertHallSeat");
 		

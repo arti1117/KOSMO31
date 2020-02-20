@@ -22,6 +22,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.kosmo.web" />
+	<context:component-scan base-package="com.kosmo.control" />
 	<context:component-scan base-package="com.kosmo.test.control" />
 	
 	
