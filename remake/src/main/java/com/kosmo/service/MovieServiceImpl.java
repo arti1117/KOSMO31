@@ -29,7 +29,23 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Override
 	public MovieVO selectMovie(MovieVO bean) throws Exception {
-		return dao.selectMovie(bean);
+		
+		MovieVO mBean = dao.selectMovie(bean);
+		String hall = mBean.getHall();
+		
+		//영화관에 따라 좌석이 다르게 나오게 하기
+		if(hall.equals("A")){
+			mBean.setSeatCntX(10);
+			mBean.setSeatCntY(10);
+		}else if(hall.equals("B")){
+			mBean.setSeatCntX(7);
+			mBean.setSeatCntY(10);
+		}else if(hall.equals("C")){
+			mBean.setSeatCntX(10);
+			mBean.setSeatCntY(5);
+		}
+		
+		return mBean;
 	}
 	
 	@Override

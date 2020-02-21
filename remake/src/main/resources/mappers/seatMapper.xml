@@ -5,7 +5,7 @@
 
 	<!-- seat 화면 관련 쿼리 -->
 	<!-- 현재 예매된 좌석들 list출력 -->
-	<select id="selectSeat" parameterType="seatVO" resultType="seatVO">	
+	<select id="selectSeat" parameterType="movieVO" resultType="seatVO">	
 		SELECT 
 			seat_no AS seatNo,
 			seat_value AS seatValue,

@@ -6,7 +6,7 @@ import com.kosmo.dto.MemberVO;
 
 public interface MemberService {
 	
-	public int selectLoginMember(MemberVO bean) throws Exception;
+	public boolean selectLoginMember(MemberVO bean) throws Exception;
 	
 	public MemberVO selectMember(MemberVO bean) throws Exception;
 	

@@ -17,8 +17,14 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	@Override
-	public int selectLoginMember(MemberVO bean) throws Exception {
-		return dao.selectLoginMember(bean);
+	public boolean selectLoginMember(MemberVO bean) throws Exception {
+		int resVal = dao.selectLoginMember(bean);
+				
+		if(resVal == 1) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	@Override
@@ -38,9 +44,23 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int insertMember(MemberVO bean) throws Exception {
-		return dao.insertMember(bean);
+		//중복된 회원가입을 방지하기 위해서 회원을 조회한다.
+		MemberVO mBean = dao.selectMember(bean);
+		
+		if(mBean == null) {
+			
+			String remail = bean.getEmail() + "@" + bean.getEmail_();
+			bean.setEmail(remail);
+			
+			int intVal = dao.insertMember(bean);
+			
+			return intVal;
+			
+		}
+		
+		throw new Exception("회원가입에러");
 	}
-	
+
 	@Override
 	public int updateMember(MemberVO bean) throws Exception {
 		return dao.insertMember(bean);
